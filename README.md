@@ -1,6 +1,6 @@
 # 🚀 SICHS - DTCEA-SRO
 
-### Sistema Integrado de Controle de Hidrometria e Serviços
+### Sistema Integrado de Controle de Hidrômetros
 
 ![Angular](https://img.shields.io/badge/Angular-21-DD0031?style=for-the-badge&logo=angular)
 ![Laravel](https://img.shields.io/badge/Laravel-11-FF2D20?style=for-the-badge&logo=laravel)
