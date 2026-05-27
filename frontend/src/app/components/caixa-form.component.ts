@@ -10,66 +10,112 @@ import { NotificationService } from '../services/notification.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
-    <section class="panel-card" style="padding: 1.4rem;">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">CADASTRO</p>
-          <h2>Nova leitura</h2>
-          <p class="section-copy">Registre o valor atual do hidrometro e calcule o consumo.</p>
-        </div>
-      </div>
+    <div class="content-card">
+      <header class="card-header">
+        <h2>Registrar Nova Leitura</h2>
+        <p>Informe os dados abaixo para calcular o consumo do período.</p>
+      </header>
 
-      <form [formGroup]="form" (ngSubmit)="submit()">
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:1rem;">
-          <div>
-            <label class="field-label">Hidrometro</label>
-            <select class="select-input" formControlName="tabela" (change)="carregarUltima()">
+      <form [formGroup]="form" (ngSubmit)="submit()" class="form-body">
+        <div class="grid-form">
+          <div class="field">
+            <label>Hidrômetro</label>
+            <select formControlName="tabela" (change)="carregarUltima()">
               <option *ngFor="let t of tabelas()" [value]="t.tabela">{{ t.label }}</option>
             </select>
           </div>
 
-          <div>
-            <label class="field-label">Coletor</label>
-            <select class="select-input" formControlName="nomecoletor">
-              <option value="">Selecione</option>
+          <div class="field">
+            <label>Militar Coletor</label>
+            <select formControlName="nomecoletor">
+              <option value="">Selecione um militar...</option>
               <option *ngFor="let m of militares()" [value]="labelMilitar(m)">{{ labelMilitar(m) }}</option>
             </select>
           </div>
 
-          <div>
-            <label class="field-label">Leitura atual (m3)</label>
-            <input class="select-input" formControlName="hidrometro" (input)="calcular()" />
+          <div class="field">
+            <label>Leitura Atual (m³)</label>
+            <input type="text" formControlName="hidrometro" placeholder="Ex: 1250.45" (input)="calcular()" />
           </div>
 
-          <div>
-            <label class="field-label">Total gasto (m3)</label>
-            <input class="select-input" formControlName="total" readonly />
+          <div class="field">
+            <label>Consumo Calculado (m³)</label>
+            <input type="text" formControlName="total" readonly class="readonly-input" />
           </div>
 
-          <div>
-            <label class="field-label">Data</label>
-            <input class="select-input" type="date" formControlName="datacoleta" />
+          <div class="field">
+            <label>Data da Coleta</label>
+            <input type="date" formControlName="datacoleta" />
           </div>
 
-          <div>
-            <label class="field-label">Hora</label>
-            <input class="select-input" type="time" formControlName="horacoleta" />
+          <div class="field">
+            <label>Hora da Coleta</label>
+            <input type="time" formControlName="horacoleta" />
           </div>
         </div>
 
-        <div style="margin-top:1rem;">
-          <label class="field-label">Observações</label>
-          <textarea class="select-input" formControlName="observacoes" rows="3"></textarea>
+        <div class="field full-width">
+          <label>Observações</label>
+          <textarea formControlName="observacoes" rows="3" placeholder="Ocorrências ou notas sobre o hidrômetro..."></textarea>
         </div>
 
-        <div style="display:flex; gap:0.75rem; margin-top:1.5rem; flex-wrap:wrap;">
-          <button class="primary-btn" type="submit" [disabled]="form.invalid">Salvar</button>
-          <button class="secondary-btn" type="button" (click)="router.navigate(['/dashboard/leituras'])">Cancelar</button>
-        </div>
+        <footer class="form-actions">
+          <button type="submit" class="save-btn" [disabled]="form.invalid">Salvar Registro</button>
+          <button type="button" class="cancel-btn" (click)="router.navigate(['/dashboard/leituras'])">Cancelar</button>
+        </footer>
       </form>
-    </section>
+    </div>
   `,
+  styles: [`
+    .content-card { background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+    
+    .card-header { padding: 1.5rem; border-bottom: 1px solid #f3f4f6; }
+    .card-header h2 { margin: 0; color: #111827; }
+    .card-header p { margin: 0.25rem 0 0; color: #6b7280; font-size: 0.9rem; }
+
+    .form-body { padding: 2rem; }
+
+    .grid-form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 0.5rem; }
+    .full-width { margin-top: 1.5rem; }
+
+    label { font-weight: 700; font-size: 0.85rem; color: #4b5563; text-transform: uppercase; }
+
+    input, select, textarea {
+      padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px;
+      font-size: 1rem; transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus { outline: none; border-color: #0066cc; }
+
+    .readonly-input { background-color: #f3f4f6; color: #0066cc; font-weight: 800; border-style: dashed; }
+
+    .form-actions {
+      margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #f3f4f6;
+      display: flex; gap: 1rem;
+    }
+
+    .save-btn {
+      padding: 0.8rem 2rem; background: #0066cc; color: white;
+      border: none; border-radius: 8px; font-weight: 700; cursor: pointer;
+    }
+
+    .cancel-btn {
+      padding: 0.8rem 2rem; background: #f3f4f6; color: #4b5563;
+      border: none; border-radius: 8px; font-weight: 700; cursor: pointer;
+    }
+
+    .save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .save-btn:hover:not(:disabled) { background: #0052a3; transform: translateY(-2px); }
+  `]
 })
+
 export class CaixaFormComponent implements OnInit {
   form: FormGroup;
   tabelas = signal<{ tabela: string; label: string }[]>([]);

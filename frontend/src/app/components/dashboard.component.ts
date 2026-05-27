@@ -1,266 +1,93 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'dashboard-page',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, RouterOutlet],
+  imports: [CommonModule, RouterLink, RouterLinkActive, RouterOutlet],
   template: `
-    <section class="dashboard-shell">
-      <aside class="sidebar">
-        <div>
-          <div class="brand-block">
-            <div class="brand-mark">S</div>
-            <div>
-              <p class="eyebrow">SICHS</p>
-              <h1>DTCEA-SRO</h1>
-            </div>
-          </div>
-
-          <p class="sidebar-copy">
-            Uma visão moderna do controle de leituras, militares e relatórios.
-          </p>
-
-          <nav class="nav-stack">
-            <a routerLink="leituras" routerLinkActive="active">Leituras</a>
-            <a routerLink="leituras/new" routerLinkActive="active">Nova leitura</a>
-            <a routerLink="militares" routerLinkActive="active">Militares</a>
-            <a routerLink="relatorio" routerLinkActive="active">Relatório PDF</a>
-          </nav>
+    <div class="page dashboard-page">
+      <header class="topbar">
+        <div class="brand-section">
+          <span class="brand">🏛️ SICHS</span>
+          <span class="subtitle">Bem-vindo, <strong>{{ auth.userName || 'Operador' }}</strong></span>
         </div>
-
-        <div class="sidebar-footer">
-          <span>Usuário</span>
-          <strong>{{ auth.userName || 'Operador' }}</strong>
+        <div class="topbar-right">
+          <span class="status-badge">● Sistema Operacional</span>
+          <button type="button" class="logout-btn" (click)="auth.logout()">Sair</button>
         </div>
-      </aside>
+      </header>
 
-      <main class="content-area">
-        <header class="topbar panel-card">
-          <div>
-            <p class="eyebrow">Bem-vindo</p>
-            <h2>{{ auth.userName || 'Operador' }}</h2>
-            <p class="section-copy">Acesse os módulos e acompanhe o fluxo do dia.</p>
-          </div>
+      <section class="actions">
+        <a routerLink="leituras" routerLinkActive="active" class="action-btn action-list">
+          <span class="icon">📊</span>
+          <span class="text">
+            <strong>Leituras</strong>
+            <small>Consultar histórico</small>
+          </span>
+        </a>
+        <a routerLink="leituras/new" routerLinkActive="active" class="action-btn action-add">
+          <span class="icon">➕</span>
+          <span class="text">
+            <strong>Nova Leitura</strong>
+            <small>Registrar medição</small>
+          </span>
+        </a>
+        <a routerLink="militares" routerLinkActive="active" class="action-btn action-militar">
+          <span class="icon">🪖</span>
+          <span class="text">
+            <strong>Militares</strong>
+            <small>Gestão de efetivo</small>
+          </span>
+        </a>
+        <a routerLink="relatorio" routerLinkActive="active" class="action-btn action-pdf">
+          <span class="icon">📄</span>
+          <span class="text">
+            <strong>Relatórios</strong>
+            <small>Gerar PDF</small>
+          </span>
+        </a>
+      </section>
 
-          <div class="topbar-actions">
-            <div class="status-pill">Operação online</div>
-            <button class="secondary-btn" type="button" (click)="auth.logout()">Sair</button>
-          </div>
-        </header>
-
-        <section class="hero-card panel-card">
-          <div>
-            <p class="eyebrow">Resumo</p>
-            <h3>Controle centralizado</h3>
-            <p class="section-copy">
-              Gestão de leitura, cadastro de militares e emissão de relatórios em um único painel.
-            </p>
-          </div>
-
-          <div class="metric-grid">
-            <div class="metric-card">
-              <span>Leituras</span>
-              <strong>Ativas</strong>
-            </div>
-            <div class="metric-card">
-              <span>Militares</span>
-              <strong>Gestão</strong>
-            </div>
-            <div class="metric-card">
-              <span>Relatórios</span>
-              <strong>PDF</strong>
-            </div>
-          </div>
-        </section>
-
-        <section class="content-frame">
-          <router-outlet></router-outlet>
-        </section>
+      <main class="content-view">
+        <router-outlet></router-outlet>
       </main>
-    </section>
+    </div>
   `,
-  styles: [
-    `
-      .dashboard-shell {
-        display: grid;
-        grid-template-columns: 280px minmax(0, 1fr);
-        gap: 1rem;
-        min-height: 100vh;
-        padding: 1rem;
-      }
-
-      .sidebar {
-        background: rgba(15, 23, 42, 0.88);
-        border-radius: 28px;
-        padding: 1.4rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
-        position: sticky;
-        top: 1rem;
-        height: calc(100vh - 2rem);
-      }
-
-      .brand-block {
-        display: flex;
-        align-items: center;
-        gap: 0.9rem;
-        margin-bottom: 1rem;
-      }
-
-      .brand-block h1 {
-        margin: 0;
-        font-size: 1.2rem;
-        color: #fff;
-      }
-
-      .brand-mark {
-        width: 2.8rem;
-        height: 2.8rem;
-        border-radius: 16px;
-        display: grid;
-        place-items: center;
-        background: linear-gradient(135deg, #38bdf8, #0ea5e9);
-        color: #fff;
-        font-weight: 900;
-      }
-
-      .sidebar-copy {
-        color: #cbd5e1;
-        line-height: 1.6;
-        margin-bottom: 1.5rem;
-      }
-
-      .nav-stack {
-        display: grid;
-        gap: 0.75rem;
-      }
-
-      .nav-stack a {
-        color: #e2e8f0;
-        padding: 0.9rem 1rem;
-        border-radius: 16px;
-        font-weight: 700;
-        transition: background 0.2s ease;
-      }
-
-      .nav-stack a:hover,
-      .nav-stack a.active {
-        background: rgba(56, 189, 248, 0.18);
-        color: #fff;
-      }
-
-      .sidebar-footer {
-        margin-top: 1.5rem;
-        padding-top: 1rem;
-        border-top: 1px solid rgba(148, 163, 184, 0.2);
-        display: flex;
-        flex-direction: column;
-        gap: 0.3rem;
-        color: #cbd5e1;
-      }
-
-      .content-area {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-      }
-
-      .topbar {
-        padding: 1.35rem 1.4rem;
-        display: flex;
-        justify-content: space-between;
-        gap: 1rem;
-        align-items: center;
-      }
-
-      .topbar h2 {
-        margin: 0;
-        color: #0f172a;
-      }
-
-      .topbar-actions {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        flex-wrap: wrap;
-      }
-
-      .status-pill {
-        padding: 0.65rem 1rem;
-        border-radius: 999px;
-        background: rgba(52, 211, 153, 0.12);
-        color: #047857;
-        font-weight: 800;
-      }
-
-      .hero-card {
-        padding: 1.4rem;
-        display: flex;
-        justify-content: space-between;
-        gap: 1rem;
-        align-items: center;
-      }
-
-      .hero-card h3 {
-        margin: 0;
-        color: #0f172a;
-      }
-
-      .metric-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(120px, 1fr));
-        gap: 0.75rem;
-      }
-
-      .metric-card {
-        border-radius: 18px;
-        padding: 1rem;
-        background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(14, 165, 233, 0.18));
-        display: flex;
-        flex-direction: column;
-        gap: 0.35rem;
-        color: #0f172a;
-      }
-
-      .metric-card span {
-        font-size: 0.9rem;
-        color: #475569;
-      }
-
-      .metric-card strong {
-        font-size: 1.05rem;
-      }
-
-      .content-frame {
-        display: block;
-      }
-
-      @media (max-width: 980px) {
-        .dashboard-shell {
-          grid-template-columns: 1fr;
-        }
-
-        .sidebar {
-          height: auto;
-          position: static;
-        }
-
-        .hero-card {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .metric-grid {
-          width: 100%;
-          grid-template-columns: 1fr;
-        }
-      }
-    `,
-  ],
+  styles: [`
+    .page { min-height: 100vh; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 1.5rem; }
+    .topbar { 
+      display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1.5rem; 
+      background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(34, 60, 80, 0.1); margin-bottom: 1.5rem;
+    }
+    .brand-section { display: flex; flex-direction: column; gap: 0.25rem; }
+    .brand { font-weight: 800; font-size: 1.3rem; color: #0066cc; }
+    .subtitle { color: #6b7280; font-size: 0.9rem; }
+    .topbar-right { display: flex; align-items: center; gap: 1.5rem; }
+    .status-badge { color: #10b981; font-weight: 700; font-size: 0.85rem; }
+    .logout-btn {
+      padding: 0.6rem 1.2rem; background: #ef4444; color: white; border: none; 
+      border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s;
+    }
+    .logout-btn:hover { background: #dc2626; transform: translateY(-2px); }
+    .actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .action-btn { 
+      display: flex; align-items: center; gap: 1rem; text-decoration: none; padding: 1.25rem; 
+      border-radius: 12px; background: white; color: #1f2937; border: 2px solid #e5e7eb; transition: all 0.3s ease;
+    }
+    .action-btn:hover, .action-btn.active { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); border-color: transparent; }
+    .action-list { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-color: #93c5fd; }
+    .action-add { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-color: #6ee7b7; }
+    .action-militar { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-color: #fcd34d; }
+    .action-pdf { background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); border-color: #a5b4fc; }
+    .action-btn .icon { font-size: 1.8rem; }
+    .action-btn .text { display: flex; flex-direction: column; }
+    .action-btn strong { font-size: 1rem; }
+    .action-btn small { color: #9ca3af; font-size: 0.8rem; }
+    @media (max-width: 768px) { .topbar { flex-direction: column; text-align: center; gap: 1rem; } .actions { grid-template-columns: 1fr; } }
+  `]
 })
 export class DashboardComponent {
   constructor(public auth: AuthService) {}
