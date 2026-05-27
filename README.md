@@ -44,6 +44,3 @@ O sistema foi projetado para substituir processos manuais, centralizando os prin
 | **Relatórios** | DomPDF | 📄 |
 
 ---
-📄 Licença
-Este projeto está licenciado sob a licença MIT. Consulte o arquivo LICENSE para mais detalhes.
-Desenvolvido para o DTCEA-SRO. 🇧🇷
