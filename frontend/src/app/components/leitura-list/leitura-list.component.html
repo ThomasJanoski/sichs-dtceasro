@@ -38,7 +38,7 @@
         <tr *ngFor="let l of leituras()">
           <td class="font-bold">{{ l.nomecoletor }}</td>
           <td>{{ l.hidrometro }}</td>
-          <td class="text-muted">{{ l.datacoleta }} <small>{{ l.horacoleta }}</small></td>
+          <td class="text-muted"> {{ l.datacoleta | date:'dd/MM/yyyy' }}  <small>{{ l.horacoleta }}</small></td>
           <td>
             <span class="consumption-tag" [ngClass]="{
               'bg-amarelo': l.total_calculado >= 25 && l.total_calculado < 32, 
