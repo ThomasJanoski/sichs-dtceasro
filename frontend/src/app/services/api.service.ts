@@ -1,11 +1,20 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { resolveApiBaseUrl } from '../utils/api-base-url';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  private readonly baseUrl = resolveApiBaseUrl();
+  private readonly baseUrl = ApiService.resolveBaseUrl();
+
+  private static resolveBaseUrl(): string {
+    const { hostname, origin } = window.location;
+
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      return '/api';
+    }
+
+    return `${origin}/api`;
+  }
 
   constructor(private http: HttpClient) {}
 

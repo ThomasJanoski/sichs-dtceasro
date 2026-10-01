@@ -1,0 +1,55 @@
+<section class="content-card form-card">
+  <header class="card-header">
+    <h1>Registrar nova leitura</h1>
+    <p>Informe os dados abaixo para calcular o consumo do período.</p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="form-body">
+    <div class="grid-form">
+      <div class="field">
+        <label for="tabela">Hidrômetro</label>
+        <select id="tabela" formControlName="tabela" (change)="carregarUltima()">
+          <option *ngFor="let t of tabelas()" [value]="t.tabela">{{ t.label }}</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="nomecoletor">Militar coletor</label>
+        <select id="nomecoletor" formControlName="nomecoletor">
+          <option value="">Selecione um militar...</option>
+          <option *ngFor="let m of militares()" [value]="labelMilitar(m)">{{ labelMilitar(m) }}</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="hidrometro">Leitura atual (m³)</label>
+        <input id="hidrometro" type="text" formControlName="hidrometro" placeholder="Ex.: 1250.45" (input)="calcular()" />
+      </div>
+
+      <div class="field">
+        <label for="total">Consumo calculado (m³)</label>
+        <input id="total" type="text" formControlName="total" readonly class="readonly-input" />
+      </div>
+
+      <div class="field">
+        <label for="datacoleta">Data da coleta</label>
+        <input id="datacoleta" type="date" formControlName="datacoleta" />
+      </div>
+
+      <div class="field">
+        <label for="horacoleta">Hora da coleta</label>
+        <input id="horacoleta" type="time" formControlName="horacoleta" />
+      </div>
+    </div>
+
+    <div class="field full-width">
+      <label for="observacoes">Observações</label>
+      <textarea id="observacoes" formControlName="observacoes" rows="3" placeholder="Ocorrências ou notas sobre o hidrômetro..."></textarea>
+    </div>
+
+    <footer class="form-actions">
+      <button type="submit" class="primary-btn" [disabled]="form.invalid">Salvar registro</button>
+      <button type="button" class="secondary-btn" (click)="router.navigate(['/dashboard/leituras'])">Cancelar</button>
+    </footer>
+  </form>
+</section>

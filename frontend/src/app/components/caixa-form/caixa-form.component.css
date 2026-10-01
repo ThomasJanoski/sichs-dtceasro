@@ -1,0 +1,23 @@
+.form-card {
+  max-width: 980px;
+}
+
+.full-width {
+  margin-top: 1.25rem;
+}
+
+.readonly-input {
+  background: var(--surface-muted);
+  color: var(--action);
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+}

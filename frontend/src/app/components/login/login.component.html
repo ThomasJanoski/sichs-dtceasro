@@ -1,0 +1,66 @@
+<main class="login-page">
+  <section class="login-panel" aria-labelledby="login-title">
+    <header class="brand-header">
+      <span class="brand-mark" aria-hidden="true">S</span>
+      <div>
+        <p class="brand-name">SICHS</p>
+        <p class="brand-context">DTCEA-SRO · Gestão de Hidrômetros</p>
+      </div>
+    </header>
+
+    <div class="login-heading">
+      <p class="eyebrow">Acesso ao sistema</p>
+      <h1 id="login-title">Entrar</h1>
+      <p>Informe suas credenciais para continuar.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="field">
+        <label for="username">Usuário</label>
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
+          autocomplete="username"
+          placeholder="Seu usuário"
+          [attr.aria-invalid]="form.controls['username'].invalid && form.controls['username'].touched"
+          [attr.aria-describedby]="form.controls['username'].invalid && form.controls['username'].touched ? 'username-error' : null"
+        />
+        <small
+          *ngIf="form.controls['username'].invalid && form.controls['username'].touched"
+          id="username-error"
+          class="field-error"
+        >
+          Informe seu usuário.
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="password">Senha</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          autocomplete="current-password"
+          placeholder="Sua senha"
+          [attr.aria-invalid]="form.controls['password'].invalid && form.controls['password'].touched"
+          [attr.aria-describedby]="form.controls['password'].invalid && form.controls['password'].touched ? 'password-error' : null"
+        />
+        <small
+          *ngIf="form.controls['password'].invalid && form.controls['password'].touched"
+          id="password-error"
+          class="field-error"
+        >
+          Informe sua senha.
+        </small>
+      </div>
+
+      <button class="primary-btn submit-btn" type="submit" [disabled]="form.invalid || isLoading()">
+        <span *ngIf="isLoading()" class="button-spinner" aria-hidden="true"></span>
+        {{ isLoading() ? 'Autenticando...' : 'Acessar sistema' }}
+      </button>
+    </form>
+
+    <p *ngIf="error()" class="error-message" role="alert">{{ error() }}</p>
+  </section>
+</main>

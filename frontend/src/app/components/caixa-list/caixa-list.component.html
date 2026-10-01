@@ -1,0 +1,50 @@
+<section class="content-card" [attr.aria-busy]="isLoading()">
+  <div *ngIf="isLoading()" class="loading-overlay" role="status" aria-live="polite">
+    <span class="spinner" aria-hidden="true"></span>
+    <span>Carregando medições...</span>
+  </div>
+
+  <header class="card-header list-header">
+    <div class="header-info">
+      <h1>Histórico de leituras</h1>
+      <p>Selecione o hidrômetro para listar as medições.</p>
+    </div>
+    <div class="header-controls">
+      <div class="select-wrapper">
+        <label for="hydrometer-table">Hidrômetro</label>
+        <select id="hydrometer-table" [value]="tabela()" (change)="onTabela($event)">
+          <option *ngFor="let t of tabelas()" [value]="t.tabela">{{ t.label }}</option>
+        </select>
+      </div>
+      <a class="primary-btn add-btn" routerLink="/dashboard/leituras/new">＋ Novo registro</a>
+    </div>
+  </header>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Coletor</th>
+          <th scope="col">Leitura (m³)</th>
+          <th scope="col">Data/Hora</th>
+          <th scope="col">Consumo</th>
+          <th scope="col" class="text-right">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="!isLoading() && leituras().length === 0">
+          <td colspan="5" class="empty-row">Nenhuma leitura encontrada.</td>
+        </tr>
+        <tr *ngFor="let l of leituras()">
+          <td class="font-bold">{{ l.nomecoletor }}</td>
+          <td>{{ l.hidrometro }}</td>
+          <td class="text-muted">{{ l.datacoleta }} <small>{{ l.horacoleta }}</small></td>
+          <td><span class="consumption-tag">{{ l.total }} m³</span></td>
+          <td class="text-right">
+            <button class="danger-btn delete-btn" type="button" (click)="excluir(l)">Remover</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

@@ -1,0 +1,130 @@
+.login-page {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 1.5rem;
+}
+
+.login-panel {
+  width: min(100%, 430px);
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand-mark {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  background: var(--action-soft);
+  color: var(--action);
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.brand-name,
+.brand-context,
+.login-heading p {
+  margin: 0;
+}
+
+.brand-name {
+  color: var(--text);
+  font-weight: 800;
+}
+
+.brand-context {
+  margin-top: 0.15rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.login-heading {
+  margin: 1.75rem 0;
+}
+
+.login-heading .eyebrow {
+  margin-bottom: 0.35rem;
+  color: var(--action);
+}
+
+.login-heading h1 {
+  margin: 0 0 0.4rem;
+  font-size: 1.65rem;
+}
+
+.login-heading > p:last-child {
+  color: var(--text-muted);
+}
+
+form {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.field-error,
+.error-message {
+  color: var(--danger);
+}
+
+.submit-btn {
+  display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 0.35rem;
+}
+
+.button-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: button-spin 700ms linear infinite;
+}
+
+.error-message {
+  margin: 1rem 0 0;
+  line-height: 1.45;
+}
+
+@keyframes button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button-spinner {
+    animation-duration: 2s;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-page {
+    padding: 1rem;
+  }
+
+  .login-panel {
+    padding: 1.25rem;
+  }
+}

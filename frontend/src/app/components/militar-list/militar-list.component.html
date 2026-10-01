@@ -1,0 +1,41 @@
+<section class="content-card" [attr.aria-busy]="isLoading()">
+  <div *ngIf="isLoading()" class="loading-overlay" role="status" aria-live="polite">
+    <span class="spinner" aria-hidden="true"></span>
+    <span>Carregando efetivo...</span>
+  </div>
+
+  <header class="card-header list-header">
+    <div class="header-info">
+      <h1>Gestão de militares</h1>
+      <p>Lista de militares cadastrados no sistema.</p>
+    </div>
+    <a class="primary-btn add-btn" routerLink="/dashboard/militares/new">＋ Novo militar</a>
+  </header>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Posto</th>
+          <th scope="col">Nome completo</th>
+          <th scope="col">SARAM</th>
+          <th scope="col" class="text-right">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="!isLoading() && militares().length === 0">
+          <td colspan="4" class="empty-row">Nenhum militar cadastrado.</td>
+        </tr>
+        <tr *ngFor="let m of militares()">
+          <td><span class="rank-badge">{{ m.posto }}</span></td>
+          <td class="font-bold">{{ m.nomecomp }}</td>
+          <td class="text-muted">{{ m.saram }}</td>
+          <td class="text-right actions-cell">
+            <a class="edit-btn" [routerLink]="['/dashboard/militares', id(m), 'edit']">Editar</a>
+            <button class="danger-btn delete-btn" type="button" (click)="excluir(m)">Excluir</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

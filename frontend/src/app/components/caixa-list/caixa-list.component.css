@@ -1,0 +1,49 @@
+.list-header {
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.header-controls {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.select-wrapper {
+  display: grid;
+  min-width: min(12rem, 100%);
+  gap: 0.35rem;
+}
+
+.add-btn {
+  min-height: 2.65rem;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.consumption-tag {
+  display: inline-block;
+  padding: 0.25rem 0.55rem;
+  border-radius: var(--radius-sm);
+  background: var(--action-soft);
+  color: var(--action);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.delete-btn {
+  padding: 0.45rem 0.65rem;
+}
+
+@media (max-width: 600px) {
+  .header-controls {
+    width: 100%;
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .header-controls > * {
+    width: 100%;
+  }
+}

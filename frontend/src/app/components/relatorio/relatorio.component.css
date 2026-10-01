@@ -1,0 +1,43 @@
+.mini-card {
+  position: relative;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.report-header {
+  text-align: center;
+}
+
+.report-icon {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: 0 auto 0.75rem;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  background: var(--action-soft);
+  color: var(--action);
+  font-size: 1.35rem;
+}
+
+.report-form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.print-btn {
+  width: 100%;
+  min-height: 2.75rem;
+}
+
+@media (max-width: 520px) {
+  .grid-2 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

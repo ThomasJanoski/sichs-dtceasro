@@ -1,0 +1,37 @@
+<div class="dashboard-page">
+  <header class="topbar">
+    <div class="brand-section">
+      <span class="brand-mark" aria-hidden="true">S</span>
+      <div>
+        <p class="brand">SICHS</p>
+        <p class="subtitle">Bem-vindo, <strong>{{ auth.userName || 'Operador' }}</strong></p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button type="button" class="secondary-btn logout-btn" (click)="auth.logout()">Sair</button>
+    </div>
+  </header>
+
+  <nav class="section-nav" aria-label="Seções do sistema">
+    <a routerLink="leituras" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <span class="nav-icon" aria-hidden="true">▤</span>
+      <span><strong>Leituras</strong><small>Consultar histórico</small></span>
+    </a>
+    <a routerLink="leituras/new" routerLinkActive="active">
+      <span class="nav-icon" aria-hidden="true">＋</span>
+      <span><strong>Nova leitura</strong><small>Registrar medição</small></span>
+    </a>
+    <a routerLink="militares" routerLinkActive="active">
+      <span class="nav-icon" aria-hidden="true">◎</span>
+      <span><strong>Militares</strong><small>Gestão de efetivo</small></span>
+    </a>
+    <a routerLink="relatorio" routerLinkActive="active">
+      <span class="nav-icon" aria-hidden="true">▧</span>
+      <span><strong>Relatórios</strong><small>Gerar PDF</small></span>
+    </a>
+  </nav>
+
+  <main class="content-view">
+    <router-outlet></router-outlet>
+  </main>
+</div>

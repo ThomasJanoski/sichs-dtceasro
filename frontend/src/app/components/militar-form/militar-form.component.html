@@ -1,0 +1,42 @@
+<section class="content-card form-card" [attr.aria-busy]="isLoading()">
+  <div *ngIf="isLoading()" class="loading-overlay" role="status" aria-live="polite">
+    <span class="spinner" aria-hidden="true"></span>
+    <span>Buscando dados...</span>
+  </div>
+
+  <header class="card-header">
+    <div class="header-content">
+      <span class="icon-circle" aria-hidden="true">◎</span>
+      <div>
+        <h1>{{ isEdit ? 'Editar militar' : 'Cadastrar novo militar' }}</h1>
+        <p>Preencha os dados do efetivo para o sistema.</p>
+      </div>
+    </div>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="form-body">
+    <div class="grid-form">
+      <div class="field">
+        <label for="posto">Posto / graduação</label>
+        <input id="posto" type="text" formControlName="posto" placeholder="Ex.: 2T, 1S, CB..." />
+      </div>
+      <div class="field">
+        <label for="nomecomp">Nome completo</label>
+        <input id="nomecomp" type="text" formControlName="nomecomp" placeholder="Nome do militar" />
+      </div>
+      <div class="field">
+        <label for="saram">SARAM</label>
+        <input id="saram" type="text" formControlName="saram" placeholder="Número SARAM" />
+      </div>
+      <div class="field">
+        <label for="ultimapromocao">Última promoção</label>
+        <input id="ultimapromocao" type="date" formControlName="ultimapromocao" />
+      </div>
+    </div>
+
+    <footer class="form-actions">
+      <button type="submit" class="primary-btn" [disabled]="form.invalid || isLoading()">Salvar</button>
+      <button type="button" class="secondary-btn" (click)="router.navigate(['/dashboard/militares'])">Cancelar</button>
+    </footer>
+  </form>
+</section>
