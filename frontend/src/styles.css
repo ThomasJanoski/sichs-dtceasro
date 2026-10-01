@@ -296,6 +296,42 @@ tbody tr:hover {
   font-weight: 700;
 }
 
+/* Cores do Input */
+.input-amarelo { background-color: #fff9c4 !important; border-color: #fbc02d !important; }
+.input-vermelho { background-color: #ffebee !important; border-color: #d32f2f !important; }
+
+.bg-amarelo {
+  background-color: yellow !important;
+  color: black;
+}
+
+.bg-vermelho {
+  background-color: rgb(254, 102, 102) !important;
+  color: white;
+}
+
+/* Feedback Visual */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Garante que o container tenha posição relativa para o overlay */
+.content-card {
+  position: relative;
+}
+
 @media (max-width: 600px) {
   .card-header,
   .form-body {

@@ -16,7 +16,7 @@ export class ApiService {
     return `${origin}/api`;
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   login(username: string, password: string): Observable<{ token: string; user: { usuario: string } }> {
     return this.http.post<{ token: string; user: { usuario: string } }>(`${this.baseUrl}/login`, {
@@ -49,11 +49,16 @@ export class ApiService {
     return this.http.get<{ tabela: string; label: string }[]>(`${this.baseUrl}/hidrometros/tabelas`);
   }
 
-  getLeituras(tabela: string, datainicio?: string, datafinal?: string): Observable<unknown[]> {
-    let params = new HttpParams();
+  getLeituras(tabela: string, page: number = 1, datainicio?: string, datafinal?: string): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page.toString()); // Adicionamos o parâmetro da página
+
     if (datainicio) params = params.set('datainicio', datainicio);
     if (datafinal) params = params.set('datafinal', datafinal);
-    return this.http.get<unknown[]>(`${this.baseUrl}/hidrometros/${tabela}`, { params });
+
+    // Note que alterei o tipo de retorno para 'any' ou 'Observable<any>' 
+    // porque o paginate() retorna um objeto, não apenas um array.
+    return this.http.get<any>(`${this.baseUrl}/hidrometros/${tabela}`, { params });
   }
 
   getLeitura(tabela: string, id: number): Observable<unknown> {

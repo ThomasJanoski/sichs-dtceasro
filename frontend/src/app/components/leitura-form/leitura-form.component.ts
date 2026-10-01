@@ -4,19 +4,23 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { NotificationService } from '../../services/notification.service';
+import { finalize, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'leitura-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './caixa-form.component.html',
-  styleUrl: './caixa-form.component.css',
+  templateUrl: './leitura-form.component.html',
+  styleUrl: './leitura-form.component.css',
   changeDetection: ChangeDetectionStrategy.Eager,
 })
-export class CaixaFormComponent implements OnInit {
+export class LeituraFormComponent implements OnInit {
   form: FormGroup;
   tabelas = signal<{ tabela: string; label: string }[]>([]);
   militares = signal<any[]>([]);
+  corTotal = signal('padrao');
+  isReady = signal(false);
+  isSaving = signal(false);
   ultima = 0;
 
   constructor(
@@ -29,32 +33,28 @@ export class CaixaFormComponent implements OnInit {
       tabela: ['hidrometros', Validators.required],
       nomecoletor: ['', Validators.required],
       hidrometro: ['', Validators.required],
+      total: [''],
       datacoleta: ['', Validators.required],
       horacoleta: ['', Validators.required],
-      total: ['', Validators.required],
       observacoes: [''],
-      hid_cal: [''],
     });
   }
 
   ngOnInit() {
-    this.api.getHidrometroTabelas().subscribe({
-      next: (t) => this.tabelas.set(t),
-      error: (error) => {
-        this.tabelas.set([]);
-        this.notificationService.showError(error, 'Não foi possível carregar os hidrometros');
-      },
-    });
+    // Use forkJoin para esperar TUDO carregar antes de liberar o form
 
-    this.api.getMilitares().subscribe({
-      next: (m) => this.militares.set(m || []),
-      error: (error) => {
-        this.militares.set([]);
-        this.notificationService.showError(error, 'Não foi possível carregar os militares');
+    forkJoin({
+      tabelas: this.api.getHidrometroTabelas(),
+      militares: this.api.getMilitares()
+    }).subscribe({
+      next: (res) => {
+        this.tabelas.set(res.tabelas);
+        this.militares.set(res.militares || []);
+        this.isReady.set(true); // Libera o formulário
+        this.carregarUltima();
       },
+      error: (e) => this.notificationService.showError(e, 'Erro ao carregar dados iniciais')
     });
-
-    this.carregarUltima();
   }
 
   labelMilitar(m: any) {
@@ -66,6 +66,7 @@ export class CaixaFormComponent implements OnInit {
       next: (r) => {
         this.ultima = parseFloat(String(r.valor).replace(',', '.')) || 0;
         this.calcular();
+        console.log(this.ultima);
       },
       error: (error) => {
         this.ultima = 0;
@@ -79,29 +80,36 @@ export class CaixaFormComponent implements OnInit {
     const atual = parseFloat(String(this.form.value.hidrometro).replace(',', '.')) || 0;
     const total = Math.max(0, atual - this.ultima);
 
+    console.log(atual, total);
+
     this.form.patchValue({
       total: total.toFixed(3),
-      hid_cal: String(this.ultima),
     });
+
+    // Lógica da cor
+    if (total >= 32) {
+      this.corTotal.set('vermelho');
+    } else if (total >= 25) {
+      this.corTotal.set('amarelo');
+    } else {
+      this.corTotal.set('padrao');
+    }
   }
 
   submit() {
-    if (this.form.invalid) {
-      return;
-    }
+    if (this.form.invalid) return;
 
-    const { tabela, ...payload } = this.form.value;
-    this.api.createLeitura(tabela, payload).subscribe({
-      next: () => {
-        this.notificationService.showSuccess(
-          'Leitura salva',
-          'A leitura foi registrada com sucesso.',
-        );
-        this.router.navigate(['/dashboard/leituras']);
-      },
-      error: (error) => {
-        this.notificationService.showError(error, 'Não foi possível salvar a leitura');
-      },
-    });
+    this.isSaving.set(true); // Inicia loading de salvamento
+    const { tabela, total, ...payload } = this.form.value;
+
+    this.api.createLeitura(tabela, payload)
+      .pipe(finalize(() => this.isSaving.set(false))) // Sai do loading mesmo se der erro
+      .subscribe({
+        next: () => {
+          this.notificationService.showSuccess('Sucesso', 'Leitura registrada.');
+          this.router.navigate(['/dashboard/leituras']);
+        },
+        error: (e) => this.notificationService.showError(e, 'Erro ao salvar'),
+      });
   }
 }

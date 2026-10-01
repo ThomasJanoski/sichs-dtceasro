@@ -39,7 +39,14 @@
           <td class="font-bold">{{ l.nomecoletor }}</td>
           <td>{{ l.hidrometro }}</td>
           <td class="text-muted">{{ l.datacoleta }} <small>{{ l.horacoleta }}</small></td>
-          <td><span class="consumption-tag">{{ l.total }} m³</span></td>
+          <td>
+            <span class="consumption-tag" [ngClass]="{
+              'bg-amarelo': l.total_calculado >= 25 && l.total_calculado < 32, 
+              'bg-vermelho': l.total_calculado >= 32
+            }">
+              {{ l.total_calculado | number:'1.3-3' }} m³
+            </span>
+          </td>
           <td class="text-right">
             <button class="danger-btn delete-btn" type="button" (click)="excluir(l)">Remover</button>
           </td>
@@ -47,4 +54,15 @@
       </tbody>
     </table>
   </div>
+
+  <footer class="pagination-footer">
+    <button class="secondary-btn" [disabled]="currentPage() === 1" (click)="load(currentPage() - 1)">Anterior</button>
+
+    <div class="page-info">
+      Página <strong>{{ currentPage() }}</strong> de {{ lastPage() }}
+    </div>
+
+    <button class="secondary-btn" [disabled]="currentPage() === lastPage()"
+      (click)="load(currentPage() + 1)">Próximo</button>
+  </footer>
 </section>

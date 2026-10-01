@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { CaixaListComponent } from './components/caixa-list/caixa-list.component';
-import { CaixaFormComponent } from './components/caixa-form/caixa-form.component';
+import { LeituraListComponent } from './components/leitura-list/leitura-list.component';
+import { LeituraFormComponent } from './components/leitura-form/leitura-form.component';
 import { MilitarListComponent } from './components/militar-list/militar-list.component';
 import { MilitarFormComponent } from './components/militar-form/militar-form.component';
 import { RelatorioComponent } from './components/relatorio/relatorio.component';
@@ -15,8 +15,8 @@ export const routes: Routes = [
     component: DashboardComponent,
     canActivate: [authGuard],
     children: [
-      { path: 'leituras', component: CaixaListComponent },
-      { path: 'leituras/new', component: CaixaFormComponent },
+      { path: 'leituras', component: LeituraListComponent },
+      { path: 'leituras/new', component: LeituraFormComponent },
       { path: 'militares', component: MilitarListComponent },
       { path: 'militares/new', component: MilitarFormComponent },
       { path: 'militares/:id/edit', component: MilitarFormComponent },
